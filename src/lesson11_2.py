@@ -98,5 +98,49 @@ def check_word():
 print(check_word())
 
 
+# Задача 5
+# Напишите три декоратора, которые можно применять последовательно к результату декорируемой функции.
+# Первый декоратор должен заменять в тексте, который выдает функция, все восклицательные знаки ! на  !!!
+# .
+# Второй декоратор должен заменять в тексте, который выдает функция, все знаки вопроса ? на  ???
+# Третий декоратор должен заменять в тексте, который выдает функция, все точки . на ...
+
+def replacing_exclamation_marks(func):
+    def wrapper(*args, **kwargs):
+        result = func(*args, **kwargs)
+        replace_exc = result.replace('!', '!!!')
+        return replace_exc
+
+    return wrapper
+
+
+def replacing_question_marks(func):
+    def wrapper(*args, **kwargs):
+        result = func(*args, **kwargs)
+        replace_question = result.replace('?', '???')
+        return replace_question
+
+    return wrapper
+
+
+def replacing_point(func):
+    def wrapper(*args, **kwargs):
+        result = func(*args, **kwargs)
+        replace_point = result.replace('.', '...')
+        return replace_point
+
+    return wrapper
+
+
+@replacing_point
+@replacing_question_marks
+@replacing_exclamation_marks
+def clean_txt():
+    return '!!/    ?    .'
+
+print(clean_txt())
+
+
+
 
 
