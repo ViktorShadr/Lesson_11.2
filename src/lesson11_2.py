@@ -2,6 +2,7 @@
 # Напишите декоратор, который проверяет, что все числа, возвращаемые декорируемой функцией, являются целыми, и
 # округляет их до целых, если это не так.
 import time
+from os.path import split
 
 
 def check_integers(func):
@@ -73,3 +74,29 @@ def get_elements():
 
 
 print(type(['1', 'qs', 're']))
+
+
+# Задача 4
+# Напишите декоратор, который берет результат декорируемой функции (текст) и возвращает текст, в котором каждое слово
+# сокращено до 8 символов. Если слово было сокращено, в конце слова ставится точка.
+
+
+def shortening_words(func):
+    def wrapper(*args, **kwargs):
+        result = func(*args, **kwargs)
+        list_word = result.split(' ')
+        slice_word = [x[:8] + '.' if len(x) > 8 else x for x in list_word ]
+        return ' '.join(slice_word)
+
+    return wrapper
+
+@shortening_words
+def check_word():
+    return ('Напишите декоратор, который берет результат декорируемой функции (текст) и возвращает текст, в '
+            'котором каждое слово сокращено до 8 символов. Если слово было сокращено, в конце слова ставится точка.')
+
+print(check_word())
+
+
+
+
