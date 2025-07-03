@@ -41,7 +41,7 @@ def retry(*, retries=3, delay=3):
             for i in range(retries):
                 try:
                     return func(*args, **kwargs)
-                except Exception:
+                except Exception():
                     time.sleep(delay)
             raise Exception('Function call failed after multiple retries.')
         return inner
@@ -54,4 +54,20 @@ def retry(*, retries=3, delay=3):
 # символов в слове и знак в конце сокращенного слова — параметры декоратора, причем символ обязательно должен
 # передаваться как именованный аргумент.
 
+def formate_txt(*, max_length, symbol):
+    def wrapper(func):
+        @wraps(func)
+        def inner(*args, **kwargs):
+            result = func(*args, **kwargs)
+            list_word = result.split(' ')
+            return ' '.join([x[:max_length] + f'{symbol}' if len(x) > max_length else x for x in list_word])
+        return inner
+    return wrapper
 
+
+@formate_txt(max_length=3, symbol="-")
+def clean(value):
+    return value
+
+print(clean('Если слово было сокращено, в конце слова ставится переданный символ. Количество '
+            'символов в слове и знак в конце сокращенного слова — параметры декоратора'))
