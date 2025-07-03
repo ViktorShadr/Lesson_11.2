@@ -3,6 +3,9 @@
 # округляет их до целых, если это не так. Декоратор должен принимать параметр
 # precision
 # , который указывает, до скольких цифр после запятой округлять числа.
+from datetime import time
+from functools import wraps
+
 
 def decorator_integer(precision):
     def check_int(func):
@@ -25,5 +28,30 @@ def example_func(value):
 
 print(example_func(5.343545454532))
 
+
+# Задача 2
+# Напишите декоратор, который повторно вызывает декорируемую функцию заданное количество раз через заданное время,
+# если произошла ошибка. Параметры, передаваемые в декоратор, обязательно должны быть именованными.
+
+
+def retry(*, retries=3, delay=3):
+    def wrapper(func):
+        @wraps(func)
+        def inner(*args, **kwargs):
+            for i in range(retries):
+                try:
+                    return func(*args, **kwargs)
+                except Exception:
+                    time.sleep(delay)
+            raise Exception('Function call failed after multiple retries.')
+        return inner
+    return wrapper
+
+
+# Задача 3
+# Напишите декоратор, который берет результат декорируемой функции (текст) и возвращает текст, в котором каждое слово
+# сокращено до определенной длины. Если слово было сокращено, в конце слова ставится переданный символ. Количество
+# символов в слове и знак в конце сокращенного слова — параметры декоратора, причем символ обязательно должен
+# передаваться как именованный аргумент.
 
 
